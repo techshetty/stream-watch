@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>StreamWatch</title>
+	<style type="text/css">
+		/*#vplayer{
+			object-fit: cover !important;
+		}*/
+		*{
+			margin: 0;padding: 0;transition: all 300ms ease-in-out; font-family: 'Dosis',sans-serif; letter-spacing: 3px;
+		}
+		body{
+			background-image: url("koto.png");
+			background-size: cover;
+
+		}
+		#movie-cont{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+/*			width: 100%;*/
+			height: 350px;
+/*			border: 1px solid red;*/
+/*			margin-bottom: 10px;*/
+		}
+		#poster{
+			width: 15%;
+			height: 80%;
+/*			border: 1px solid red;*/
+			border-radius: 10px;
+		}
+		#poster:hover{
+			transform: scale(1.2);
+			cursor: pointer;
+		}
+		#navbar{
+			display: flex;
+			position: fixed;
+			height: 80px;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			background-color: rgba(0,0,0,.8);
+			color: gold;
+			font-size: 20px;
+			font-weight: bold;
+			z-index: 999;
+		}
+		.active{
+			border: 2px solid silver;
+			padding: 5px;
+			transform: scale(1.2);
+			border-radius: 15px;
+		}
+		#cat_title{
+			font-size: 25px;
+			letter-spacing: 3px;
+			text-transform: capitalize;
+			font-weight: bold;
+			color: white;
+		}
+		#logo{
+			width: 150px;
+			height: 80px;
+/*			border:1px solid red ;*/
+		}
+		.search{
+			background-image: url("assets/search.png");
+			background-size: contain;
+			background-position: center;
+			margin-left: 15px;
+		}
+		.navitem:hover{
+			cursor: pointer;
+			transform: scale(1.15);
+		}
+		.search:hover{
+			transform: scale(1.2);
+			cursor: pointer;
+		}
+		#vidcontainer{
+			display: none;
+			position: fixed;
+			top: 50%;left: 50%;
+			transform: translate(-50%,-50%);
+			width: 920px;
+			height: 570px;
+		}
+		.pos1{
+			background-image: url("assets/naroto.jpg");
+			background-size: cover;
+		}
+		.pos2{
+			background-image: url("assets/one peice.jpg");
+			background-size: cover;
+		}
+		.pos3{
+			background-image: url("assets/myheroacademia.jpg");
+			background-size: cover;
+		}
+		.pos4{
+			background-image: url("assets/jujutsu kaisen.png");
+			background-size: cover;
+		}
+		.pos5{
+			background-image: url("assets/bleach.webp");
+			background-size: cover;
+		}
+		.webpos1{
+			background-image: url("assets/gameofthrones.jpg");
+			background-size: contain;
+		}.webpos2{
+			background-image: url("assets/Breakingbad - Copy.avif");
+			background-size: cover;
+		}
+		.webpos3{
+			background-image: url("assets/lucifer.webp");
+			background-size: cover;
+		}
+		.webpos4{
+			background-image: url("assets/strangerthings.jpg");
+			background-size: cover;
+		}.webpos5{
+			background-image: url("assets/mirzapur.webp");
+			background-size: cover;
+		}
+		.uchilogo{
+			background-image: url("assets/sharingan.png");
+			background-size: contain;
+			background-repeat: no-repeat;
+			width: 70px;
+			height: 70px;
+			margin-left: 20px;
+			animation: spin 1500ms linear alternate infinite;
+		}
+		@keyframes spin{
+			from{
+				transform: rotate(0deg);
+			}
+			to{
+				transform: rotate(360deg);
+			}
+		}
+		.logodiv{
+			display: flex;
+			justify-content: center;align-items: center;
+		}
+		.searchholder{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-right: 20px;
+		}
+		.search{
+			width: 40px !important; height: 40px !important;
+			background-repeat: no-repeat;
+		}
+		#sbar{
+			padding: 5px;
+			border-radius: 10px;
+			border: none;outline: none;
+			opacity: 0.8;
+		}
+	</style>
+</head>
+<body onkeydown="closePl(event)">
+	<div id="navbar">
+		<div id="logo" class="logodiv">
+			<div id="logoholder" class="uchilogo"></div>
+		</div>
+		<div class="active navitem">HOME</div>
+		<div class="navitem">CHATROOM</div>
+		<div class="navitem">CONTACT</div>
+		<div class="navitem">ABOUT US</div>
+		<div class="searchholder">
+			<div><input type="text" id="sbar" onkeydown="checkKey(event)"></div>
+			<div class="search" onclick="searchMov('btnsrch')"></div>
+		</div>
+	</div>
+	<div style="height: 82px; width: 100%;"></div>
+	<div id="cat_title">Ongoing popular anime</div>
+	<div id="movie-cont">
+		<div id="poster" onclick="playMov('naruto')"  class="pos1" title="Naruto - Eng Sub"></div>
+		<div id="poster" class="pos2" onclick="playMov('opiece')"></div>
+		<div id="poster" class="pos3" onclick="playMov('mha')"></div>
+		<div id="poster" class="pos4" onclick="playMov('jjk')"></div>
+		<div id="poster" class="pos5" onclick="playMov('bleach')"></div>
+	</div>
+		<div id="cat_title">Most watched web series</div>
+	<div id="movie-cont">
+		<div id="poster" class="webpos1"></div>
+		<div id="poster" class="webpos2"></div>
+		<div id="poster" class="webpos3"></div>
+		<div id="poster" class="webpos4"></div>
+		<div id="poster" class="webpos5"></div>
+	</div>
+	<div id="vidcontainer">
+		<video id="videoPlayer" controls width="920px" height="570px" onseeked="sendtows(event)"  onpause="pauseClients()"  onplay="playClients()">
+        <source src="Avatar.2009.1080p.Hindi.English._TheMoviesflix.com.co.mkv.mp4" type="video/mp4" id="vidsrc">
+        Your browser does not support the video tag.
+    </video>
+	</div>
+<script type="text/javascript">
+	const checkKey = (e)=>{
+		console.log(e.target.value);
+		if(e.key==='Enter')searchMov(e.target.value);
+	}
+	const mov_names=["naruto","op","mha","jjk","bleach"]
+	const mov_links=["naruto_ep.mkv","op_ep.mkv","mha_ep.mkv","jjk_ep.mkv","bleach_ep.mkv"]
+	moviemap={}
+	for(var i=0;i<mov_names.length;i++){
+		moviemap[mov_names[i]]=mov_links[i]
+	}
+	const searchMov =(str="")=>{
+		try{
+			if(str=='btnsrch') str=document.querySelector("#sbar").innerHTML;
+			var targ=moviemap[str]
+			console.log(targ)
+			if(targ==undefined) throw new Error("KEYERROR")
+		document.querySelector("#vidcontainer").style.display='block';
+		document.querySelector("#vidsrc").src="assets\\"+targ;
+		document.querySelector("#videoPlayer").load();
+		}
+		catch(err){
+			alert("Sorry! This movie isnt availale at the moment")
+		}
+	}
+
+	const socket = new WebSocket("ws://hp-pgs:8080")
+	socket.onopen= ()=>{
+		console.log("Connected to WS Server")
+	}
+	const playMov=(str)=>{
+		document.querySelector("#vidcontainer").style.display='block';
+		document.querySelector("#vidsrc").src="assets\\"+moviemap[str];
+		document.querySelector("#videoPlayer").load();
+
+	}
+	//reception from ws
+	socket.onmessage = (event)=>{
+		const reader = new FileReader();
+		reader.onload = function(){
+			const data = reader.result;
+			if(data=="pause") document.querySelector("#videoPlayer").pause();
+			else if(data=="play")if(data=="pause") document.querySelector("#videoPlayer").play();
+			else{
+			const curtime=parseFloat(data);
+			if(!isNaN(curtime) && isFinite(curtime)) document.querySelector("#videoPlayer").currentTime=curtime;
+			else console.log("Invalid timestamp recieved from server");
+		}};
+		reader.readAsText(event.data);
+	};
+
+	const sendtows=(event)=>{
+		const currentTime=event.target.currentTime;
+		console.log(currentTime)
+		socket.send(currentTime.toString())
+	}
+	const pauseClients=()=>{
+		console.log("Sender: pause")
+		socket.send("pause")
+	}
+	const playClients=()=>{
+		console.log("Sender: play")
+		socket.send("play")
+	}
+	const closePl=(e)=>{
+		if(e.key==='Escape')
+		document.querySelector("#vidcontainer").style.display='none';
+	}
+</script>
+</body>
+</html

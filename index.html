@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synced Video Player</title>
+</head>
+<body>
+    <video id="videoPlayer" controls>
+        <source src="Avatar.2009.1080p.Hindi.English._TheMoviesflix.com.co.mkv.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+    // Connect to WebSocket server
+const socket = new WebSocket("ws://hp-pgs:8080");
+
+// When WebSocket connection is open
+socket.onopen = () => {
+    console.log("Connected to WebSocket server");
+};
+
+// When receiving a message from the server
+socket.onmessage = (event) => {
+    // Read the data from the Blob as text
+    const reader = new FileReader();
+    reader.onload = function() {
+        // Extract the data from the Blob as a string
+        const data = reader.result;
+
+        // Assuming the data represents the current playback time as a string
+        const currentTime = parseFloat(data);
+        
+        // Check if the parsed value is a finite number
+        if (!isNaN(currentTime) && isFinite(currentTime)) {
+            // Set the current time of the video player
+            document.getElementById("videoPlayer").currentTime = currentTime;
+        } else {
+            console.error("Received non-finite or invalid value:", data);
+        }
+    };
+    reader.readAsText(event.data);
+};
+
+// Send playback time to server when it changes
+document.getElementById("videoPlayer").addEventListener("timeupdate", () => {
+   async const currentTime = document.getElementById("videoPlayer").currentTime;
+    socket.send(currentTime.toString());
+});
+
+    </script>
+</body>
+</html>

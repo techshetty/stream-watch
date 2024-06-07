@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>StreamWatch</title>
+	<style type="text/css">
+		/*#vplayer{
+			object-fit: cover !important;
+		}*/
+		*{
+			margin: 0;padding: 0;transition: all 300ms ease-in-out; font-family: 'Dosis',sans-serif; letter-spacing: 3px;
+		}
+		body{
+			background-image: url("koto.png");
+			background-size: cover;
+
+		}
+		#movie-cont{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+/*			width: 100%;*/
+			height: 350px;
+			border: 1px solid red;
+/*			margin-bottom: 10px;*/
+		}
+		#poster{
+			width: 15%;
+			height: 80%;
+			border: 1px solid red;
+			border-radius: 10px;
+		}
+		#poster:hover{
+			transform: scale(1.2);
+			cursor: pointer;
+		}
+		#navbar{
+			display: flex;
+			position: fixed;
+			height: 80px;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			background-color: rgba(0,0,0,.8);
+			color: gold;
+			font-size: 20px;
+			font-weight: bold;
+		}
+		.active{
+			border: 2px solid silver;
+			padding: 5px;
+			transform: scale(1.2);
+			border-radius: 15px;
+		}
+		#cat_title{
+			font-size: 25px;
+			letter-spacing: 3px;
+			text-transform: capitalize;
+			font-weight: bold;
+			color: white;
+		}
+		#logo{
+			width: 150px;
+			height: 80px;
+			border:1px solid red ;
+		}
+		.search{
+			background-image: url("assets/search.png");
+			background-size: contain;
+			background-repeat: no-repeat;
+			transform: scale(0.5);
+		}
+		.navitem:hover{
+			cursor: pointer;
+			transform: scale(1.15);
+		}
+		.search:hover{
+			transform: scale(0.75);
+			cursor: pointer;
+		}
+		#vidcontainer{
+			display: none;
+			position: fixed;
+			top: 50%;left: 50%;
+			transform: translate(-50%,-50%);
+			width: 920px;
+			height: 570px;
+		}
+	</style>
+</head>
+<body>
+	<div id="navbar">
+		<div id="logo"></div>
+		<div class="active navitem">HOME</div>
+		<div class="navitem">CHATROOM</div>
+		<div class="navitem">CONTACT</div>
+		<div class="navitem">ABOUT US</div>
+		<div id="logo" class="search"></div>
+	</div>
+	<div style="height: 82px; width: 100%;"></div>
+	<div id="cat_title">Ongoing popular anime</div>
+	<div id="movie-cont">
+		<div id="poster" onclick="playMov()"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+	</div>
+		<div id="cat_title">Most watched web series</div>
+	<div id="movie-cont">
+		<div id="poster"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+		<div id="poster"></div>
+	</div>
+	<div id="vidcontainer">
+		<video id="videoPlayer" width="920px" height="570px">
+        <source src="Avatar.2009.1080p.Hindi.English._TheMoviesflix.com.co.mkv.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+	</div>"
+<script type="text/javascript">
+	const socket = new WebSocket("ws://hp-pgs:8080")
+	socket.onopen= ()=>{
+		console.log("Connected to WS Server")
+	}
+	const playMov=()=>{
+		document.querySelector("#vidcontainer").style.display='block';
+	}
+	//reception from ws
+socket.onmessage = (event)=>{
+		const reader = new FileReader();
+		reader.onload = function(){
+			const data = reader.result;
+			console.log(data=='pause')
+			if(data=="pause") document.querySelector("#videoPlayer").pause();
+			else if(data=="play")document.querySelector("#videoPlayer").play();
+			else{
+			const curtime=parseFloat(data);
+			if(!isNaN(curtime) && isFinite(curtime)) document.querySelector("#videoPlayer").currentTime=curtime;
+			else console.log("Invalid timestamp recieved from server");
+		}};
+		reader.readAsText(event.data);
+	};
+
+	// }
+
+	// const sendtows=(event)=>{
+	// 	const currentTime=event.target.currentTime;
+	// 	console.log(currentTime)
+	// 	socket.send(currentTime.toString())
+	// }
+	// const pauseClients=()=>{
+	// 	console.log("Sender: pause")
+	// 	socket.send("pause")
+	// }
+	// const playClients=()=>{
+	// 	console.log("Sender: play")
+	// 	socket.send("play")
+	// }
+</script>
+</body>
+</html
